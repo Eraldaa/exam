@@ -1,0 +1,16 @@
+Hello evrybody,
+my solution is pretty straight forward:
+
+CertUtil -hashfile "C:\User ... linuxmint64.iso" SHA256 > checksum.txt //Calculate the hash checksum of our iso file and store the result in a file
+
+//Now you should check the file to see the hashcode which is on the 2nd line.
+$x = Get-Content "C:\User\...checksum.txt" //store content on a variable
+
+//Download the sha256sum.txt from the website and store the content in a varibale
+$y = Get-Content "C:\User\...sha256sum.txt"
+
+//Now we gotta extract the hash code of our specific version of Linux Mint (18.3 64bit for me! :D)
+$a = $y[1].Substring(0,64) //Extract the first 64 character of the second line
+
+$x[1] -eq $a //If it returns TRUE then you're all set!
+
