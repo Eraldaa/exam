@@ -18,5 +18,5 @@ $data | foreach {$items = $_.split(" ") if ($items[0] -eq sum){$int=1}}
    "Everything is good"
    }
    else{
-   "The is a problem"
+   "There is a problem"
    }
