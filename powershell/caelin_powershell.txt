@@ -1,0 +1,14 @@
+# Calculate sha256 hash and save to file
+CertUtil -hashfile (file containing linuxmint hash) sha256 > hashfile.txt
+
+# Save third line that contains hash to variable
+$x = Get-Content hashfile.txt -TotalCount 3[-1]
+
+# Save second line of sha256sum.txt that contains hash from website
+$y = Get-Content sha256sum.txt -TotalCount 2[-1] 
+
+# Get first 64 characters from $y that corresponds to hash
+$y = $y.Substring(0, 64)
+
+# Compare equality
+$x -eq $y
