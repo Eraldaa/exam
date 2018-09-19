@@ -1,0 +1,22 @@
+//Carlos Ocanto Davila
+
+//get the content of the ground-truth. Here we will know the hashcodes we need to compare with our results
+$data=Get-Content name_groundtruth.txt
+
+// Here we get the  hashcode of the iso file we have downloaded from the clud
+$sum=CertUtil -hashfile [iso file] SHA256
+
+//This is just a file that will allow us to print the appropriate message
+$int=0
+
+// for each line we will split the values of the ground-truth   " ". The first position of the array  is the one we are interested in (hexacode)
+//if in one of the iterations the hashcode of the ground-truth is equal to the one we obtained the flag is changed to 1
+//after reading all lines the aproppriate message will be printed, depending on the value of the flag
+
+$data | foreach {$items = $_.split(" ") if ($items[0] -eq sum){$int=1}}
+    if($int -eq 1){
+   "Everything is good"
+   }
+   else{
+   "The is a problem"
+   }
