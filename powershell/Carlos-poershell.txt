@@ -1,22 +1,50 @@
-//Carlos Ocanto Davila
+#checksum of the isofile
+sum="$(shasum -a 256 linuxmint-18.3-cinnamon-64bit.iso)"
 
-//get the content of the ground-truth. Here we will know the hashcodes we need to compare with our results
-$data=Get-Content name_groundtruth.txt
+#We separate the array in name and hash
+#Done in bash the check
 
-// Here we get the  hashcode of the iso file we have downloaded from the clud
-$sum=CertUtil -hashfile [iso file] SHA256
+IFS=' ' read -r -a array <<< "$sum"
+hash_file="${array[0]}"
+name_file="${array[1]}"
 
-//This is just a file that will allow us to print the appropriate message
-$int=0
+#We load the groundtruth provided by linux
 
-// for each line we will split the values of the ground-truth   " ". The first position of the array  is the one we are interested in (hexacode)
-//if in one of the iterations the hashcode of the ground-truth is equal to the one we obtained the flag is changed to 1
-//after reading all lines the aproppriate message will be printed, depending on the value of the flag
+file="ground_truth.txt"
 
-$data | foreach {$items = $_.split(" ") if ($items[0] -eq sum){$int=1}}
-    if($int -eq 1){
-   "Everything is good"
-   }
-   else{
-   "There is a problem"
-   }
+#We check line by line
+
+while IFS= read -r line
+do
+	#printf '%s\n' "$line"
+	
+	#we split the array in two. The hash and name for the line
+	
+	hash_line="$(cut -d' ' -f1 <<<"${line}")"
+	name_line="$(cut -d' ' -f2 <<<"${line}")"
+	
+	#we get rid of the *
+	
+	name_line=${name_line#"*"}
+	name_line=${name_line%"*"}
+	
+	if [ "$name_line" == "$name_file"  ]; 
+	then                
+		if [ "$hash_line" == "$hash_file"  ]; 
+		then
+			echo "
+			Everything is OK. The Hash code and the name of the file coincide with the groundtruth
+			"
+		else
+			echo "
+			There is a PROBLEM. The hash codes do not coincide
+			"
+		fi   
+	         
+	fi
+	
+done <"$file"
+
+
+
+
