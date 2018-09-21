@@ -1,0 +1,3 @@
+https://github.com/caelin-kaplan/git_exam.git
+
+My rel1 branch is "feature" and rel2 is "release 2"
